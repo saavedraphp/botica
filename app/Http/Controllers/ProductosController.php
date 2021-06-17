@@ -7,6 +7,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
+
+use Maatwebsite\Excel\Facades\Excel;
+
+
+use App\Imports\Productosimport;
+
 class ProductosController extends Controller
 {
 
@@ -20,27 +26,34 @@ class ProductosController extends Controller
 
  
 
-    public function store(Request $request)
+    public function importExcel(Request $request)
     {
-        $producto                   = new Producto();
         
-        $producto->empr_id          = $request->get('cbo_empresa');
-        $producto->prod_nombre      = $request->get('producto');
-        $producto->prod_codigo      = $request->get('codigo_producto');
-        $producto->prod_sku         = $request->get('sku');
-        $producto->prod_ean         = $request->get('ean');
-        $producto->pres_id          = $request->get('cbo_presentacion');
-        $producto->prod_lote         = $request->get('lote');
-        $producto->prod_serie       = $request->get('serie');
-        $producto->prod_precio  =   (float)$request->get('precio');
-        $producto->prod_comentario  = $request->get('comentario');
-        
-        $producto->save();
+        $file = $request->file('img');
 
-        //return redirect('admin/productos');
-        return redirect('admin/productos')->with('message','La operacion se realizo con Exito')->with('operacion','1');
+        Excel::import(new Productosimport,$file);
+        
+        return redirect('admin/importar')->with('message','La operacion se realizo con Exito')->with('operacion','1');
     }
     
-     
+    
+    public function buscarProduco(Request $request)
+    {
+        try {
+         //        DB::enableQueryLog();
+        $productos = Producto::where('pp_nombre', 'LIKE', '%' . trim($request->input('palabra')). '%')->orderBy('pp_precio', 'asc')->get();
+        
+        //$productos = DB::table('productos_precio')
+          //              ->where('pp_nombre','LIKE','%'.trim($request->palabra).'%')->orderBy('pp_precio', 'asc')->get();
+         //dd(DB::getQueryLog());
+        return $productos;
+        
+        } catch (Exception $e) {
+            report($e);
+            return $e;
+        }
+
+    }
+
 
 }
