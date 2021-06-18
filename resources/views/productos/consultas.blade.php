@@ -83,6 +83,7 @@ id="frm_formulario"  >
               
             </tr>
           </table>
+          
 
           
             <div>
@@ -94,10 +95,29 @@ id="frm_formulario"  >
 
 </div> 
  
+<div class="form-row" >
+    <div class="form-group col-md-2" >
+     
+    </div>
+
+    <div class="form-group col-md-8" >
+    <h2>Monto Total: 158.00 
+                <a href="#" v-on:click="guardarLista()"> <button type="button" class="btn btn-success float-right">Guardar Pedido</button></a>
+              </h2>
+    </div>
+
+        <div class="form-group col-md-2"  >
+        </div>
+</div>
+
+
+
+
 </form> 
  
-</div>
  
+
+
 
 @endsection
 @section('scripts')
@@ -122,6 +142,14 @@ const app = new Vue({
     methods:{
  
 
+      guardarLista:function(){
+           alert('save');
+       // axios.get(url+`/productos/empresa`, {params: {empresa_id: this.selected_empresa} }).then((response) => {
+         //       this.data = response.data; }); 
+        
+      },
+
+
       getName:function(data1,index){
         this.query = data1.pp_nombre;
         this.search_data = [];
@@ -139,7 +167,7 @@ const app = new Vue({
      if(this.temp=="")
      {
        
-       alert("Seleccione un pais");
+       alert("Seleccione un Producto");
        this.$refs.r_query.focus();
        this.v_cantidad = "";
        return;

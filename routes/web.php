@@ -36,8 +36,9 @@ Route::get('admin/consultas',function(){
     });
         
 Route::get('obtenerProductos/', 'ProductosController@buscarProduco');
+Route::get('grabarListaPedido/', 'PedidosController@grabarListaPedido');
 
-
+ 
         
 Route::post('import-list-excel','ProductosController@importExcel')->name('products.import.excel');
     
