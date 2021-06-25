@@ -197,7 +197,7 @@ id="frm_formulario"  >
 
     <div class="form-group col-md-8" >
     <h2 >Monto total @{{v_total}}
-                <a href="#" v-on:click="cancularTotal()"> <button type="button" class="btn btn-success float-right">Guardar Pedido</button></a>
+                <a href="#" v-on:click="grabarListaPedido()"> <button type="button" class="btn btn-success float-right">Guardar Pedido</button></a>
               </h2>
     </div>
 
@@ -267,17 +267,26 @@ const app = new Vue({
 
     created: function () {
     // `this` hace referencia a la instancia vm
-    this.cancularTotal();
+    this.calcularTotal();
   },
  
 
     methods:{
 
+      grabarListaPedido:function()
+      {
+
+        console.log('grabarListaPedido');
+         axios.get(`{{ env('MY_URL') }}/grabarListaPedido`, {params: {listaProductos: this.lista, total:this.v_total} }).then((response) => {
+         this.states = response.data;
+         console.log(response.data);
+         });
 
 
+      },
 
 
-      cancularTotal:function(){
+      calcularTotal:function(){
         var subTotal = 0.00;
         
 
@@ -350,7 +359,7 @@ const app = new Vue({
        this.temp = [];
 
        this.$refs.r_query.focus();
-       this.cancularTotal();
+       this.calcularTotal();
 
      }
 
@@ -377,7 +386,7 @@ const app = new Vue({
         if(confirm("Estas seguro de eliminar el registro Id: "+data.id+" "+data.pp_nombre)){
 
                   this.$delete(this.lista, index);
-                  this.cancularTotal();
+                  this.calcularTotal();
 
         }
 

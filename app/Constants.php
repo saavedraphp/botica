@@ -2,7 +2,7 @@
 namespace App;
 
 class Constants {
-   const TITULO = 'Sistema Almagri';
+   const TITULO = 'Sistema Botica';
 
    //OPERACIONES
    const NUEVO = 'Nuevo';
