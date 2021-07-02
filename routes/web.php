@@ -38,8 +38,11 @@ Route::get('admin/consultas',function(){
 Route::get('obtenerProductos/', 'ProductosController@buscarProduco');
 Route::get('grabarListaPedido/', 'PedidosController@grabarListaPedido');
 
+Route::resource('admin/pedidos', 'PedidosController');
  
-        
+
+Route::get('reporte_acta/id/{id}/','PedidosController@pdfPedido')->name('reportePedido.pdf');
+
 Route::post('import-list-excel','ProductosController@importExcel')->name('products.import.excel');
     
  

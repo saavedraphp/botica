@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Barryvdh\DomPDF\Facade as PDF;
 
 use Exception;
 
@@ -22,6 +23,17 @@ class PedidosController extends Controller
     }
 
 
+    public function index()
+    {
+        $pedidos = PedidosUsuario::where('usua_id',Auth::user()->id)->paginate(10);
+        return view('pedidos.index', ['pedidos' => $pedidos]);
+    }
+
+    
+    public function edit()
+    {
+        return;
+    }
 
 
     public function grabarListaPedido(Request $request)
@@ -69,4 +81,31 @@ class PedidosController extends Controller
         } 
 
     }
+
+
+    public function pdfPedido($id)
+    {
+        DB::enableQueryLog();
+ 
+        $pedido = PedidosUsuario::findOrFail($id);
+         
+        
+         $detalles = DB::table('pedidos_usuario  as p')
+        ->join('productos_pedido as pp', 'p.id', '=', 'pp.pedido_id')
+        ->select('p.id', 'p.nombre', 'p.usua_id','pp.pedido_id', 'pp.prod_id', 'pp.prod_nombre','pp.pp_precio', 'pp.pp_cantidad',
+        'pp.prov_code',  'pp.pp_laboratorio')
+        ->where('p.id', '=',$id )
+        ->orderBy('pp.created_at', 'asc')->get();
+       // dd(DB::getQueryLog());
+        
+
+        
+        $pdf = PDF::loadView('pdf.pedido',['pedido'=>$pedido,'detalles'=>$detalles]);
+        
+
+        return $pdf->download('Pedido - '.$id.'.pdf');
+      
+    }
+
+
 }

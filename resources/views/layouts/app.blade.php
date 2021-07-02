@@ -239,6 +239,20 @@
                             </li>
 
  
+                            <li class="nav-item">
+                                <a href="/admin/pedidos"
+                                    class="{{ Request::path() === 'pedidos' ? 'nav-link active' : 'nav-link' }}">
+                                    
+                                    <i class="nav-icon fas fa-plus-circle"></i>
+                                    <p>
+                                        Pedidos
+                                        <?php //use App\Acta;
+//$count = Acta::all()->count();?>
+                                        <span class="right badge badge-danger">{{ $count ?? '0' }}</span>
+                                    </p>
+                                </a>
+                            </li>
+
 
                         </ul>
                     </nav>
