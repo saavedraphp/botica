@@ -53,7 +53,7 @@
       <td>
 
 
-        <form action="{{route('pedidos.edit',$pedido->id)}}" method="POST" id="frm_destroy{{$pedido->id}}">
+        <form action="{{route('pedidos.destroy',$pedido->id)}}" method="POST" id="frm_destroy{{$pedido->id}}">
           @method('DELETE')
           @csrf
 

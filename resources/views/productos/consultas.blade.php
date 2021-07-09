@@ -231,6 +231,7 @@ const app = new Vue({
 
 
     data: {
+        bug: true,
         v_total:"0.00",
 
         query:'',
@@ -243,9 +244,24 @@ const app = new Vue({
 
         cancelar: null,
 
+        lista:[],
 
 
-        lista:[{id:100, pp_nombre:'APRONAX', prov_code:'PIONERO',
+        
+        temp:[],
+
+        v_cantidad: '',    
+
+          
+
+    },
+
+    created: function () {
+    // `this` hace referencia a la instancia vm
+
+    if(this.bug==true)
+    {
+      lista:[{id:100, pp_nombre:'APRONAX', prov_code:'PIONERO',
         pp_laboratorio:'ROCHE', pp_presentacion:'CAJA',
         pp_precio:100.20, cantidad:2},
         
@@ -257,17 +273,10 @@ const app = new Vue({
         pp_laboratorio:'GENFAR', pp_presentacion:'CAJA',
         pp_precio:150.20, cantidad:7}],
 
-        temp:[],
+      this.calcularTotal()
+      
 
-        v_cantidad: '',    
-
-          
-
-    },
-
-    created: function () {
-    // `this` hace referencia a la instancia vm
-    this.calcularTotal();
+    }
   },
  
 
@@ -278,8 +287,9 @@ const app = new Vue({
 
         console.log('grabarListaPedido');
          axios.get(`{{ env('MY_URL') }}/grabarListaPedido`, {params: {listaProductos: this.lista, total:this.v_total} }).then((response) => {
-         this.states = response.data;
-         console.log(response.data);
+         alert(response.data);
+          location.reload();
+         //console.log(response.data);
          });
 
 

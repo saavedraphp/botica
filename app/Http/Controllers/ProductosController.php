@@ -28,12 +28,30 @@ class ProductosController extends Controller
 
     public function importExcel(Request $request)
     {
-        
-        $file = $request->file('img');
+        try {
+        DB::beginTransaction();
+            $file = $request->file('img');
 
-        Excel::import(new Productosimport,$file);
-        
+            //ELIMINAR
+            DB::table('productos_precio')
+                          ->where('prov_code','=',trim($request->get('rbo_proveedor')))->delete();
+            DB::commit();
+
+            
+
+            session(['prov_code' => $request->get('rbo_proveedor'),
+                    'fecha' => $request->get('fecha')]);
+            Excel::import(new Productosimport,$file);
+            
+
         return redirect('admin/importar')->with('message','La operacion se realizo con Exito')->with('operacion','1');
+
+        } catch (Exception $e) {
+            DB::rollBack(); 
+            report($e);
+            return $e;
+        }
+
     }
     
     

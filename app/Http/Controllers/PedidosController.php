@@ -25,7 +25,7 @@ class PedidosController extends Controller
 
     public function index()
     {
-        $pedidos = PedidosUsuario::where('usua_id',Auth::user()->id)->paginate(10);
+        $pedidos = PedidosUsuario::where('usua_id',Auth::user()->id)->orderBy("created_at","desc")->paginate(10);
         return view('pedidos.index', ['pedidos' => $pedidos]);
     }
 
@@ -39,7 +39,7 @@ class PedidosController extends Controller
     public function grabarListaPedido(Request $request)
     {
         
-       // return $cadena;
+       
         
          DB::beginTransaction();
         try {
@@ -65,14 +65,14 @@ class PedidosController extends Controller
                     'pp_laboratorio'    => $fila2->pp_laboratorio,
                     'pp_precio'         => $fila2->pp_precio,
                     'pp_cantidad'       => $fila2->cantidad
-                    ];             
+                    ];
                  
             } 
     
             ProductosPedido::insert($query);
  
          DB::commit();
-        return "OK";
+        return "Se guardo el pedido correctamente";
         
         } catch (Exception $e) {
             DB::rollBack(); 
@@ -107,5 +107,16 @@ class PedidosController extends Controller
       
     }
 
+
+
+    public function destroy($id)
+    {
+        PedidosUsuario::destroy($id);
+        //ProductosPedido::destroy($id);
+
+        return redirect('admin/pedidos')->with('message','La operacion se realizo con Exito')->with('operacion','1');
+        
+
+    }    
 
 }

@@ -18,7 +18,7 @@ Route::get('/admin', 'HomeController@index')->name('home');
  
 
 
-Route::resource('admin/importar', 'ImportarController');
+Route::get('admin/importar', 'ProductosPrecioController@importar');
  
 
  
@@ -27,10 +27,10 @@ Route::resource('admin/importar', 'ImportarController');
 
  
 
-Route::get('admin/importar',function(){
+/*Route::get('admin/importar',function(){
     return view('productos.importar');
     });
-
+*/
 Route::get('admin/consultas',function(){
     return view('productos.consultas');
     });
